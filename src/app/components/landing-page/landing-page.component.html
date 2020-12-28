@@ -1,0 +1,23 @@
+<div class="landing-wrapper">
+  <h2>Welcome To Trivia Quiz</h2>
+  <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+    <div>
+      <p class="error-message" *ngIf="error">There don't seem to be enough questions of that type, please try something else.</p>
+      <label for="category">Select Category:</label>
+      <select name="category" id="category" ngModel>
+        <option value="" selected>Any Difficulty</option>
+        <option *ngFor="let cat of categories" value="{{cat.id}}">{{cat.name}}</option>
+      </select>
+    </div>
+    <div>
+      <label for="difficulty">Select Difficulty</label>
+      <select name="difficulty" id="difficulty" ngModel>
+        <option value="" selected>Any Difficulty</option>
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+</div>

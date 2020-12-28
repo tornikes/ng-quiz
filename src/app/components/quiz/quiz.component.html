@@ -1,0 +1,19 @@
+<p>quiz works!</p>
+<div *ngIf="question">
+  <div class="question-wrapper" [innerHTML]="question.question"></div>
+  <div class="answer-wrapper">
+    <div 
+      class="answer" 
+      *ngFor="let answer of answers" 
+      [innerHTML]="answer"
+      [class.active]="selectedAnswer === answer"
+      (click)="onSelectAnswer(answer)"></div>
+    </div>
+    <button (click)="onAnswer()" [disabled]="selectedAnswer === null">Next question</button>
+</div>
+<div *ngIf="completed">
+  <div class="result-wrapper">
+    You got {{ corrects }}/{{ total }}!
+  </div>
+  <button (click)="onRestart()">Start Again</button>
+</div>
