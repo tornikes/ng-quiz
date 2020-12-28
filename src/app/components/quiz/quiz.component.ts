@@ -22,7 +22,6 @@ export class QuizComponent implements OnInit, OnDestroy {
   quizSub: Subscription;
 
   constructor(
-    private quizService: QuizService,
     private store: Store<fromApp.AppState>
   ) { }
 
