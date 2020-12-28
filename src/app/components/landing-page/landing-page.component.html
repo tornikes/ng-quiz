@@ -1,5 +1,5 @@
-<div class="landing-wrapper">
-  <h2>Welcome To Trivia Quiz</h2>
+<div class="starting-wrapper">
+  <h1 class="starting-heading">Welcome To Trivia Quiz!</h1>
   <form (ngSubmit)="onSubmit(f)" #f="ngForm">
     <div>
       <p class="error-message" *ngIf="error">There don't seem to be enough questions of that type, please try something else.</p>
@@ -17,7 +17,7 @@
         <option value="medium">Medium</option>
         <option value="hard">Hard</option>
       </select>
-      <button type="submit">Submit</button>
+      <button class="btn" type="submit">Submit</button>
     </div>
   </form>
 </div>

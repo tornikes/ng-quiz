@@ -1,0 +1,43 @@
+.starting-wrapper {
+  padding: 1rem;
+}
+
+.starting-heading {
+  color: #ececec;
+  font-weight: 600;
+  margin: 1.5rem 0;
+}
+
+label {
+  display: block;
+    font-size: 1.3em;
+    margin: 0.5em 0;
+    color: #ececec;
+}
+
+select {
+  font-size: 1.2em;
+  display: block;
+  width: 100%;
+  padding: 0.6em;
+  border-radius: 0.2em;
+  border: 1px solid green;
+  margin-bottom: 1.5em;
+  background-color: white;
+}
+
+.error-message {
+  color: #ececec;
+  padding: 0.5rem;
+}
+
+@media (max-width: 500px) {
+  .starting-heading {
+    font-size: 1.5rem;
+  }
+
+  select {
+    padding: 0.3em;
+    font-size: 1rem;
+  }
+}

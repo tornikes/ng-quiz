@@ -1,2 +1,6 @@
-<app-landing-page *ngIf="!started"></app-landing-page>
-<app-quiz *ngIf="started"></app-quiz>
+<div id="root">
+  <div class="main-wrapper">
+    <app-landing-page *ngIf="!started"></app-landing-page>
+    <app-quiz *ngIf="started"></app-quiz>
+  </div>
+</div>

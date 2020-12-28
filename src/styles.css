@@ -1,1 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Roboto;
+}
+
+#root {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #1a1a2e;
+}
+
+.btn {
+  font-size: 1.2rem;
+  padding: .5em 2.2em;
+  border: 3px solid white;
+  border-radius: 4px;
+  display: block;
+  margin: 0 auto;
+  cursor: pointer;
+  background-color: #e94560;
+  color: #ececec;
+}
+.btn:hover {
+  background-color: #ee6d82;
+}
+.btn:focus {
+  outline: none;
+}
