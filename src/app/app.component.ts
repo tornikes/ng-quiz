@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { QuizService } from './quiz.service';
+import * as fromApp from '../app/store/app.reducer';
 
 @Component({
   selector: 'app-root',
@@ -12,12 +13,12 @@ export class AppComponent implements OnInit, OnDestroy {
   statusSub: Subscription;
 
   constructor(
-    private quizService: QuizService
+    private store: Store<fromApp.AppState>
   ) { }
 
   ngOnInit() {
-    this.quizService.quizStatus
-      .subscribe(status => this.started = status);
+    this.store.select(store => store.quizState.started)
+      .subscribe(started => this.started = started);
   }
 
   ngOnDestroy() {

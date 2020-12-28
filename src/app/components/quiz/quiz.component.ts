@@ -1,6 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+import { tap, withLatestFrom } from 'rxjs/operators';
 import { QuizService } from 'src/app/quiz.service';
+import * as fromApp from '../../store/app.reducer';
+import * as QuizActions from '../quiz/store/quiz.actions';
 
 @Component({
   selector: 'app-quiz',
@@ -13,24 +17,43 @@ export class QuizComponent implements OnInit, OnDestroy {
   answered: string[] = [];
   selectedAnswer: string = null;
   completed = false;
+  score: number;
+  totalQuestions: number;
   quizSub: Subscription;
 
   constructor(
-    private quizService: QuizService
+    private quizService: QuizService,
+    private store: Store<fromApp.AppState>
   ) { }
 
   ngOnInit(): void {
-    this.question = this.quizService.getCurrentQuestion();
-    this.allAnswers = this.shuffle([...this.question.incorrect_answers, this.question.correct_answer]);
-    this.quizSub = this.quizService.nextQuestion.subscribe(question => {
-      if (!question) {
-        this.completed = true;
-        this.question = null;
-      } else {
-        this.question = question;
-        this.allAnswers = this.shuffle([...this.question.incorrect_answers, this.question.correct_answer]);
-      }
-    });
+    this.quizSub = this.store.select(store => store.quizState.index).pipe(
+      withLatestFrom(this.store.select(store => store.quizState)),
+      tap(([index, quizState]) => {
+        if(index < quizState.questions.length) {
+          this.question = quizState.questions[index];
+          this.allAnswers = this.shuffle([...this.question.incorrect_answers, this.question.correct_answer]);
+        } else {
+          this.store.dispatch(new QuizActions.QuizCompleted());
+        }
+      })
+    ).subscribe();
+
+    this.store.select(store => store.quizState)
+      .subscribe(quizState => {
+        this.completed = quizState.completed;
+
+        if(this.completed) {
+          let count = 0;
+          for(let i = 0; i < quizState.questions.length; i++) {
+            if(quizState.questions[i].correct_answer === quizState.answered[i]) {
+              count++;
+            }
+          }
+          this.score = count;
+          this.totalQuestions = quizState.questions.length;
+        }
+      });
   }
 
   private shuffle(array) {
@@ -52,26 +75,23 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   get corrects() {
-    return this.quizService.computeResult(this.answered);
+    return this.score;
   }
 
   get total() {
-    return this.quizService.questionCount();
+    return this.totalQuestions;
   }
 
   onAnswer() {
-    this.answered.push(this.selectedAnswer);
+    this.store.dispatch(new QuizActions.AnswerAdded(this.selectedAnswer));
     this.selectedAnswer = null;
-    this.quizService.getNextQuestion();
   }
 
   onRestart() {
-    this.quizService.quizStatus.next(false);
-    this.answered = [];
+    this.completed = false;
+    this.store.dispatch(new QuizActions.RestartQuiz());
     this.question = [];
     this.selectedAnswer = null;
-    this.allAnswers = [];
-    this.completed = false;
   }
 
   onSelectAnswer(answer: string) {
